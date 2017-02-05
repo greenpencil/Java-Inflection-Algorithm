@@ -10,16 +10,17 @@ case of the same word. This difference is then calculated and if there is a diff
 0 the word is considered a stem word. If not, the algorithms tries to guess the stem word
 
 ##Output
-`Stem? countr -> country different characters = 3`
-     
- `Stem: live ->
-     lived different characters = 0`
-     
- `Stem? text ->
-     texted different characters = 1`
-     
- `Stem? text ->
-     text different characters = 1`
-     
- `Stem? text ->
-     texts different characters = 2`
+`countr Confirmed? false
+  -country
+  -countries
+  `
+ 
+  `
+ live Confirmed? true
+  -lived
+  -live`
+  
+  `text Confirmed? true
+    -texted
+    -text
+    -texts`
