@@ -11,6 +11,7 @@ public class Main {
 	    String input = "" +
                 "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated texted they lived in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then".replaceAll("\\p{P}", "");
 	    String[] words = input.split(" ");
+	    ArrayList<Inflection> inflections = new ArrayList<>();
 
 	    int i = 0;
 	    for (String word : words)
@@ -50,22 +51,63 @@ public class Main {
 
                     // if the likeness reaches a threshold we consider it complete
                     if(likeness > 3) {
+                        boolean stemFlag = false;
+                        String stem = "";
                         // if the likeness - the length of the word is 0 we have the stem of the word
                         if(likeness - word.length() == 0) {
-                            System.out.println("Stem: " + word);
+                            stem = word;
+                            System.out.println("Stem: " + stem);
+                            stemFlag = true;
                         }
                         // otherwise we need to calculate the stem, this may not be correct
                         else {
-                            String stem = word.substring(0, likeness);
+                            stem = word.substring(0, likeness);
                             System.out.println("Stem? " + stem);
+                            stemFlag = false;
                         }
                         // all the related characters we found
                         System.out.println("    " + word2 + " different characters = " + abs(likeness - word.length()));
+
+                        // ADD ALL CONFIRMED FLAGS
+                        boolean stemAlreadyExists = false;
+                        for (Inflection inflection: inflections) {
+                              // is the word a confirmed stem, and not already in the inflection list, add it
+                             if(inflection.stem.equals(stem))
+                             {
+                                 if(stemFlag)
+                                 {
+                                     inflection.stemConfirmed = true;
+                                 }
+                                 stemAlreadyExists = true;
+                             }
+                        }
+
+                        if(!stemAlreadyExists) {
+                            inflections.add(new Inflection(stem, stemFlag));
+                        }
+
+                        for (Inflection inflection: inflections) {
+                            if (inflection.stem.equals(stem)) {
+                                if (!inflection.words.contains(word2)) {
+                                    inflection.words.add(word2);
+                                }
+                            }
+                        }
+
                     }
                 }
                 j++;
             }
             i++;
+        }
+
+        for (Inflection inflection : inflections)
+        {
+            System.out.println(inflection.stem + " Confirmed? " + inflection.stemConfirmed);
+            for (String word:inflection.words
+                 ) {
+                System.out.println(" -" + word);
+            }
         }
     }
 }
