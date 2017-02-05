@@ -54,16 +54,22 @@ public class Main {
                         boolean stemFlag = false;
                         String stem = "";
                         // if the likeness - the length of the word is 0 we have the stem of the word
-                        if(likeness - word.length() == 0) {
+                        if(likeness - charactersWord1.length == 0) {
                             stem = word;
                             System.out.println("Stem: " + stem);
                             stemFlag = true;
                         }
                         // otherwise we need to calculate the stem, this may not be correct
                         else {
-                            stem = word.substring(0, likeness);
-                            System.out.println("Stem? " + stem);
                             stemFlag = false;
+
+                            stem = charactersWord1[0] + "";
+                            for (int l = 1; l < charactersWord1.length; l++) {
+                                if(l < likeness)
+                                {
+                                    stem = stem + "" + charactersWord1[l];
+                                }
+                            }
                         }
                         // all the related characters we found
                         System.out.println("    " + word2 + " different characters = " + abs(likeness - word.length()));
